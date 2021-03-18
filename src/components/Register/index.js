@@ -1,13 +1,15 @@
 import { Button } from 'native-base';
 import React, { Component } from 'react';
 import { 
-    Platform, View, Text, TextInput, TouchableOpacity, Alert, StyleSheet
+    View, Text, TextInput, TouchableOpacity, Alert
 } from 'react-native';
 
 import styles from "../Login/styles";
 export { styles };
 
-import { postRequest, showApiErrors } from '../Services/ApiWrapper'
+import AppConfig from '../Config/AppConfig';
+import axios from 'axios';
+// axios.defaults.baseURL = AppConfig.apiEndPoint;
 
 import ForgotPassword from '../Login/forgot';
 import Login from '../Login/login';
@@ -30,19 +32,19 @@ export default class Register extends Component {
     validate = () => {
         let messages = []
         let textMessages = ''
-        if (!this.state.fname.trim()) {
+        if (!this.state.formData.fname.trim()) {
             messages.push('Please enter your first name.')
         }
-        else if(!this.state.lname.trim()) {
+        else if(!this.state.formData.lname.trim()) {
             messages.push('Please enter your last name.')
         }
-        else if(!this.state.email.trim()) {
+        else if(!this.state.formData.email.trim()) {
             messages.push('Please enter your email.')
         }
-        else if(!this.state.phone.trim()) {
+        else if(!this.state.formData.phone.trim()) {
             messages.push('Please enter your phone.')
         }
-        else if(!this.state.password.trim()) {
+        else if(!this.state.formData.password.trim()) {
             messages.push('Please enter your password.')
         }
         messages.forEach((msg, index) => {
@@ -56,10 +58,12 @@ export default class Register extends Component {
     register = () => {
         let validation = this.validate();
         if(!validation) {
-            postRequest('register', this.state.formData).then(res => {
-                this.props.navigation.navigate('Profile');
+            const formData = this.state.formData;
+
+            axios.post('/register', { formData }).then(res => {
+                console.log(res.data);
             }).catch(error => {
-                showApiErrors(error);
+                console.log(error);
             })
         } 
         else {
@@ -82,6 +86,11 @@ export default class Register extends Component {
         }
     }
 
+    changeFormData = (value) => {
+        let formData = this.state.formData;
+        this.setState({ formData: { ...formData, ...value } });
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -91,28 +100,28 @@ export default class Register extends Component {
                         <TextInput placeholder="First Name *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
-                            style={styles.txtInput} onChangeText={(fname) => this.setState({fname: fname})}/>
+                            style={styles.txtInput} onChangeText={(fname) => this.changeFormData({fname})}/>
 
                         <TextInput placeholder="Last Name *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
-                            style={styles.txtInput} onChangeText={(lname) => this.setState({lname: lname})}/>
+                            style={styles.txtInput} onChangeText={(lname) => this.changeFormData({lname})}/>
                         
                         <TextInput placeholder="Email Address *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
-                            style={styles.txtInput} onChangeText={(email) => this.setState({email: email})}/>
+                            style={styles.txtInput} onChangeText={(email) => this.changeFormData({email})}/>
 
                         <TextInput placeholder="Phone Number *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
-                            style={styles.txtInput} onChangeText={(phone) => this.setState({phone: phone})}/>
+                            style={styles.txtInput} onChangeText={(phone) => this.changeFormData({phone})}/>
 
                         <TextInput placeholder="Password *"
                             underlineColorAndroid="transparent"
                             placeholderTextColor="gray"
                             secureTextEntry={true}
-                            style={styles.txtInput} onChangeText={(password) => this.setState({password: password})}/>
+                            style={styles.txtInput} onChangeText={(password) => this.changeFormData({password})}/>
 
                         <Text 
                             onPress={() => this.props.navigation.navigate('Forgot Password')} 
@@ -133,7 +142,6 @@ export default class Register extends Component {
         );
     }
 }
-
 
 // Alert.alert(
 //     "Successful!",
