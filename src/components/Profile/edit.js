@@ -15,9 +15,13 @@ export default class EditProfile extends Component {
         }
     }
 
-    async componentDidMount() {
-        const register = await AppConfig.fetchCoins();
-        this.setState({register});
+    componentDidMount() {
+        fetch('http://192.168.92.2:8000/api/register').then(
+            response => { console.log(response )}
+        ).catch (
+            err => { console.log(err)}
+        );
+        // this.setState({register});
     }
     
     validate = () => {
