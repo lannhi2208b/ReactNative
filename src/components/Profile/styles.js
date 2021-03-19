@@ -128,7 +128,7 @@ const styles = {
         width: "50%",
         textAlign: 'right',
         fontSize: 16,
-    }
+    },
 };
 
 export default styles
