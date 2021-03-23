@@ -35,7 +35,7 @@ const NavigationDrawerStructure = (props) => {
     };
   
     return (
-        <View style={{flexDirection: 'row'}}>
+        <View style={styles.viewHeader}>
             <Header style={styles.headerStyle}>
                 <Button transparent onPress={() => toggleDrawer()}
                     style={[styles.headerButtonStyle, styles.boxFlexStart]}>
@@ -130,7 +130,7 @@ const HomeStack = ({navigation}) => {
                     },
                     headerTitleStyle: {
                         fontWeight: 'bold',
-                    }
+                    },
                 })}
             />
         </Stack.Navigator>

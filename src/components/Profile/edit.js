@@ -19,7 +19,7 @@ export default class EditProfile extends Component {
     componentDidMount() {
         axios.get('http://192.168.92.2:8080/api/register')
         .then(response => {
-            this.setState({ register: response.data });
+            this.setState({ register: response.data[0] });
         })
         .catch(error => console.log(error))
     }
@@ -96,7 +96,7 @@ export default class EditProfile extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    <View style={{ height: 100, color: 'black' }}>
+                    {/* <View style={{ height: 20, color: 'black' }}>
                         {register && register.map((item) => {
                             return (
                                 <View key={item.id}>
@@ -104,7 +104,7 @@ export default class EditProfile extends Component {
                                 </View>
                             )
                         })}
-                    </View>
+                    </View> */}
                     <View>
                         <Text style={[styles.header, styles.textAlignCenter]}>Edit Profile</Text>
                         <View style={styles.boxAvatar}>
@@ -114,23 +114,28 @@ export default class EditProfile extends Component {
                         <View>
                             <Text style={styles.txtTittle}>First Name</Text>
                             <TextInput underlineColorAndroid="transparent"
-                                style={styles.txtInputProfile} onChangeText={(fname) => this.setState({fname:fname})}/>
+                                style={styles.txtInputProfile} value={register.fname} 
+                                onChangeText={(fname) => this.setState({fname:fname})}/>
 
                             <Text style={styles.txtTittle}>Last Name</Text>
                             <TextInput underlineColorAndroid="transparent"
-                                style={styles.txtInputProfile} onChangeText={(lname) => this.setState({lname:lname})}/>
+                                style={styles.txtInputProfile} value={register.lname} 
+                                onChangeText={(lname) => this.setState({lname:lname})}/>
 
                             <Text style={styles.txtTittle}>Email Address</Text>
                             <TextInput underlineColorAndroid="transparent"
-                                style={styles.txtInputProfile} onChangeText={(email) => this.setState({email:email})}/>
+                                style={styles.txtInputProfile} value={register.email}  
+                                onChangeText={(email) => this.setState({email:email})}/>
 
                             <Text style={styles.txtTittle}>Phone Number</Text>
                             <TextInput underlineColorAndroid="transparent"
-                                style={styles.txtInputProfile} onChangeText={(phone) => this.setState({phone:phone})}/>
+                                style={styles.txtInputProfile} value={register.phone} 
+                                onChangeText={(phone) => this.setState({phone:phone})}/>
 
                             <Text style={styles.txtTittle}>Address</Text>
                             <TextInput underlineColorAndroid="transparent"
-                                style={styles.txtInputProfile} onChangeText={(address) => this.setState({address:address})}/>
+                                style={styles.txtInputProfile} value={register.address}  
+                                onChangeText={(address) => this.setState({address:address})}/>
 
                             <TouchableOpacity onPress={this.saveProfile} style={styles.button}>
                                 <Text style={styles.txtButton}>SAVE</Text>

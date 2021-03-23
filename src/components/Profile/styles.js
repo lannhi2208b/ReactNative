@@ -70,6 +70,7 @@ const styles = {
         position: "absolute",
         bottom: 5,
         left: 5,
+        color: 'white',
     },
     boxProfileHeader: {
         width: "100%",
