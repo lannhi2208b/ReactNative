@@ -3,17 +3,15 @@
 const URI = 'http://192.168.92.2:8000';
 
 export default {
-    async fetchCoins() {
-        console.log('SSSS');
+    async fetchConfig() {
         try {
-            let response = await fetch(URI + '/api/register');
+            let response = fetch('http://192.168.92.2:8000/api/register').then((response) => response.json());
+            //let responseJsonData = response.json();
             console.log(response);
-            let responseJsonData = response.json();
-            console.log(responseJsonData);
-            return responseJsonData;
+            return response;
         }
         catch(e) {
-            console.log(e.response)
+            console.log(e)
         }
     }
 }

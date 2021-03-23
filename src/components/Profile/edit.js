@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import { Button, Icon } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Platform, View, Text, TextInput, TouchableOpacity, Alert, Image, SafeAreaView } from 'react-native';
+import { Platform, View, Text, TextInput, TouchableOpacity, Alert, Image, SafeAreaView, FlatList } from 'react-native';
 import images from "../Themes/images";
 import styles from "./styles";
 export { styles, images };
 
+import axios from 'axios';
 import AppConfig from '../Config/AppConfig';
 export default class EditProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            register: []
+            register: [],
         }
     }
 
     componentDidMount() {
-        fetch('http://192.168.92.2:8000/api/register').then(
-            response => { console.log(response )}
-        ).catch (
-            err => { console.log(err)}
-        );
-        // this.setState({register});
+        axios.get('http://192.168.92.2:8080/api/register')
+        .then(response => {
+            this.setState({ register: response.data });
+        })
+        .catch(error => console.log(error))
     }
     
     validate = () => {
@@ -91,12 +91,12 @@ export default class EditProfile extends Component {
     }
 
     render() {
-        const { register } = this.props;
+        const { register } = this.state;
 
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    <View style={{ backgroundColor: 'red', height: 100, color: 'black' }}>
+                    <View style={{ height: 100, color: 'black' }}>
                         {register && register.map((item) => {
                             return (
                                 <View key={item.id}>
