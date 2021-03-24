@@ -1,5 +1,6 @@
 import { Button } from 'native-base';
 import React, { Component } from 'react';
+import Spinner from 'react-native-loading-spinner-overlay'
 import { 
     View, Text, TextInput, TouchableOpacity, Alert
 } from 'react-native';
@@ -8,22 +9,20 @@ import styles from "../Login/styles";
 export { styles };
 
 import axios from 'axios';
-// axios.defaults.baseURL = AppConfig.apiEndPoint;
-
 import ForgotPassword from '../Login/forgot';
 import Login from '../Login/login';
 export { Login, ForgotPassword };
-
 export default class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             formData: {
-                fname: "",
-                lname: "",
-                email: "",
-                phone: "",
-                password: "",
+                fname: '',
+                lname: '',
+                email: '',
+                phone: '',
+                password: '',
             }
         }
     }
@@ -57,12 +56,31 @@ export default class Register extends Component {
     register = () => {
         let validation = this.validate();
         if(!validation) {
-            const formData = this.state.formData;
-
-            axios.post('/register', { formData }).then(res => {
-                console.log(res.data);
-            }).catch(error => {
-                console.log(error);
+            this.setState({ isLoading: true })
+            axios.post('http://192.168.92.2:8080/api/post-register', this.state.formData)
+            .then(res => {
+                this.setState({ isLoading: false })
+                this.setState({ formData: { fname: '', lname: '', email: '', phone: '', password: '' }})
+                Alert.alert(
+                    "Successful!",
+                    "Welcome to React Native!",
+                    [
+                        { 
+                            text: "Ok",
+                            onPress: () => console.log("Ok Pressed"),
+                        },
+                        {
+                            text: "Cancel",
+                            onPress: () => console.log("Cancel Pressed"),
+                            style: "cancel",
+                        }
+                    ],
+                    { cancelable: false }
+                );
+            })
+            .catch(error => {
+                this.setState({ isLoading: false })
+                console.log(error)
             })
         } 
         else {
@@ -85,41 +103,49 @@ export default class Register extends Component {
         }
     }
 
-    changeFormData = (value) => {
+    changeFormData = (item) => {
         let formData = this.state.formData;
-        this.setState({ formData: { ...formData, ...value } });
+        this.setState({ formData: { ...formData, ...item } });
     }
 
     render() {
+        const { formData, isLoading } = this.state
+
         return (
             <View style={styles.container}>
+                <Spinner visible={isLoading} />
                 <View>
                     <Text style={[styles.header, styles.textAlignCenter]}>Register</Text>
                     <View style={[styles.boxMainRegister, styles.boxWithShadow, styles.borderBox]}>
                         <TextInput placeholder="First Name *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
+                            value={formData.fname}
                             style={styles.txtInput} onChangeText={(fname) => this.changeFormData({fname})}/>
 
                         <TextInput placeholder="Last Name *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
+                            value={formData.lname}
                             style={styles.txtInput} onChangeText={(lname) => this.changeFormData({lname})}/>
                         
                         <TextInput placeholder="Email Address *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
+                            value={formData.email}
                             style={styles.txtInput} onChangeText={(email) => this.changeFormData({email})}/>
 
                         <TextInput placeholder="Phone Number *" 
                             placeholderTextColor="gray" 
                             underlineColorAndroid="transparent"
+                            value={formData.phone}
                             style={styles.txtInput} onChangeText={(phone) => this.changeFormData({phone})}/>
 
                         <TextInput placeholder="Password *"
                             underlineColorAndroid="transparent"
                             placeholderTextColor="gray"
                             secureTextEntry={true}
+                            value={formData.password}
                             style={styles.txtInput} onChangeText={(password) => this.changeFormData({password})}/>
 
                         <Text 
@@ -142,19 +168,3 @@ export default class Register extends Component {
     }
 }
 
-// Alert.alert(
-//     "Successful!",
-//     "Welcome to React Native!",
-//     [
-//         { 
-//             text: "Ok",
-//             onPress: () => console.log("Ok Pressed"),
-//         },
-//         {
-//             text: "Cancel",
-//             onPress: () => console.log("Cancel Pressed"),
-//             style: "cancel",
-//         }
-//     ],
-//     { cancelable: false }
-// );

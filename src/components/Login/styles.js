@@ -16,9 +16,10 @@ const styles = {
         backgroundColor: 'white',
         width: "100%",
         height: 40,
-        borderRadius: 5,
+        borderRadius: 4,
         color: '#000',
         marginTop: 10,
+        padding: 10,
     },
     button: {
         backgroundColor: "#4ca5b3",

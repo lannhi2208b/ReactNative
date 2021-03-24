@@ -9,20 +9,6 @@ import {
 import images from "../Themes/images";
 import styles from './styles';
 export { styles, images };
-
-const dataSource = [
-    {
-        id: 'RN1',
-        title: 'Black Speaker',
-        price: '240.00',
-    },
-    {
-        id: 'RN2',
-        title: 'Red Speaker',
-        price: '270.00',
-    },
-];
-
 export default class ProductDetail extends Component {
     constructor(props) {
         super(props);
@@ -32,7 +18,6 @@ export default class ProductDetail extends Component {
         }
     }
 
-    
     onStarRatingPress = (rating) => {
         this.setState({ starCount: rating })
     }

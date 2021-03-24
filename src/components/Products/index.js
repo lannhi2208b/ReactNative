@@ -59,14 +59,8 @@ const dataSource = [
 export default class Products extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            // starCount: 4,
-        }
+        this.state = {}
     }
-
-    // onStarRatingPress = (rating) => {
-    //     this.setState({ starCount: rating });
-    // }
 
     render() {
         return (
