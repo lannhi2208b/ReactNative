@@ -7,7 +7,6 @@ import styles from "./styles";
 export { styles, images };
 
 import axios from 'axios';
-import AppConfig from '../Config/AppConfig';
 export default class EditProfile extends Component {
     constructor(props) {
         super(props);
@@ -96,15 +95,6 @@ export default class EditProfile extends Component {
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView}>
-                    {/* <View style={{ height: 20, color: 'black' }}>
-                        {register && register.map((item) => {
-                            return (
-                                <View key={item.id}>
-                                    <Text>{item.fname} | { item.lname }</Text>
-                                </View>
-                            )
-                        })}
-                    </View> */}
                     <View>
                         <Text style={[styles.header, styles.textAlignCenter]}>Edit Profile</Text>
                         <View style={styles.boxAvatar}>

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Header, Button, Icon } from 'native-base';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -36,12 +36,12 @@ const NavigationDrawerStructure = (props) => {
   
     return (
         <View style={styles.viewHeader}>
-            <Header style={styles.headerStyle}>
-                <Button transparent onPress={() => toggleDrawer()}
+            <View style={styles.headerStyle}>
+                <TouchableOpacity transparent onPress={() => toggleDrawer()}
                     style={[styles.headerButtonStyle, styles.boxFlexStart]}>
                     <Icon name='ios-menu' style={[styles.headerIcon, styles.boxFlexStart]} />
-                </Button>
-            </Header>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };

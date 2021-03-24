@@ -7,7 +7,6 @@ import {
 import styles from "../Login/styles";
 export { styles };
 
-import AppConfig from '../Config/AppConfig';
 import axios from 'axios';
 // axios.defaults.baseURL = AppConfig.apiEndPoint;
 
