@@ -311,7 +311,7 @@ const EditProfileStack = ({navigation}) => {
 const LoginStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="Forgot Password" component={ForgotPassword} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen
                 name="Login"
