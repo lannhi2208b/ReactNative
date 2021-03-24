@@ -107,11 +107,67 @@ const TabStack = () => {
             />
         </Tab.Navigator>
     );
-  };
+};
+
+const MyStack = () => {
+    return (
+        <NavigationContainer>
+            <Drawer.Navigator
+                drawerContentOptions={{
+                    activeTintColor: '#0F707F',
+                    itemStyle: {
+                        marginVertical: 5,
+                    },
+                }}>
+                <Drawer.Screen name="HomeStack" 
+                    component={HomeStack} 
+                    options={{drawerLabel: 'Home'}}/>
+                
+                <Drawer.Screen name="ProductStack" 
+                    component={ProductStack} 
+                    options={{ drawerLabel: 'Products' }} 
+                />
+                <Drawer.Screen name="ProductDetailStack" 
+                    component={ProductDetailStack} 
+                    options={{ drawerLabel: 'Product Detail' }} 
+                />
+                <Drawer.Screen name="ProfileStack" 
+                    component={ProfileStack} 
+                    options={{ drawerLabel: 'Profile' }} 
+                />
+                <Drawer.Screen name="EditProfileStack" 
+                    component={EditProfileStack} 
+                    options={{ drawerLabel: 'Edit Profile' }} 
+                />
+                <Drawer.Screen name="LoginStack" 
+                    component={LoginStack} 
+                    options={{ drawerLabel: 'Login' }} 
+                />
+                <Drawer.Screen name="RegisterStack" 
+                    component={RegisterStack} 
+                    options={{ drawerLabel: 'Register' }} 
+                />
+                <Drawer.Screen name="ForgotPasswordStack" 
+                    component={ForgotPasswordStack} 
+                    options={{ drawerLabel: 'Forgot Password' }} 
+                />
+                <Drawer.Screen name="SettingsStack" 
+                    component={SettingsStack} 
+                    options={{ drawerLabel: 'Settings' }} 
+                />
+            </Drawer.Navigator>
+        </NavigationContainer>
+    );
+};
+
+export default MyStack;
 
 const HomeStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Register" component={Register} />
             <Stack.Screen
                 name="Home"
                 component={Home}
@@ -140,6 +196,7 @@ const HomeStack = ({navigation}) => {
 const ProductStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Products">
+            <Stack.Screen name="Product Detail" component={ProductDetail} />
             <Stack.Screen
                 name="Products"
                 component={Products}
@@ -196,6 +253,8 @@ const ProductDetailStack = ({navigation}) => {
 const ProfileStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Profile">
+            <Stack.Screen name="Edit Profile" component={EditProfile} />
+            <Stack.Screen name="Settings" component={SettingsPage} />
             <Stack.Screen
                 name="Profile"
                 component={Profile}
@@ -252,6 +311,8 @@ const EditProfileStack = ({navigation}) => {
 const LoginStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="Register" component={Register} />
             <Stack.Screen
                 name="Login"
                 component={Login}
@@ -280,6 +341,8 @@ const LoginStack = ({navigation}) => {
 const RegisterStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Register">
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Forgot Password" component={ForgotPassword} />
             <Stack.Screen
                 name="Register"
                 component={Register}
@@ -308,6 +371,7 @@ const RegisterStack = ({navigation}) => {
 const ForgotPasswordStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="ForgotPassword">
+            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen
                 name="Forgot Password"
                 component={ForgotPassword}
@@ -360,56 +424,3 @@ const SettingsStack = ({navigation}) => {
         </Stack.Navigator>
     );
 };
-
-const MyStack = () => {
-  return (
-        <NavigationContainer>
-            <Drawer.Navigator
-                drawerContentOptions={{
-                    activeTintColor: '#0F707F',
-                    itemStyle: {
-                        marginVertical: 5,
-                    },
-                }}>
-                <Drawer.Screen name="HomeStack" 
-                    component={HomeStack}
-                    options={{drawerLabel: 'Home'}} 
-                />
-                <Drawer.Screen name="ProductStack" 
-                    component={ProductStack} 
-                    options={{ drawerLabel: 'Products' }} 
-                />
-                <Drawer.Screen name="ProductDetailStack" 
-                    component={ProductDetailStack} 
-                    options={{ drawerLabel: 'Product Detail' }} 
-                />
-                <Drawer.Screen name="ProfileStack" 
-                    component={ProfileStack} 
-                    options={{ drawerLabel: 'Profile' }} 
-                />
-                <Drawer.Screen name="EditProfileStack" 
-                    component={EditProfileStack} 
-                    options={{ drawerLabel: 'Edit Profile' }} 
-                />
-                <Drawer.Screen name="LoginStack" 
-                    component={LoginStack} 
-                    options={{ drawerLabel: 'Login' }} 
-                />
-                <Drawer.Screen name="RegisterStack" 
-                    component={RegisterStack} 
-                    options={{ drawerLabel: 'Register' }} 
-                />
-                <Drawer.Screen name="ForgotPasswordStack" 
-                    component={ForgotPasswordStack} 
-                    options={{ drawerLabel: 'Forgot Password' }} 
-                />
-                <Drawer.Screen name="SettingsStack" 
-                    component={SettingsStack} 
-                    options={{ drawerLabel: 'Settings' }} 
-                />
-            </Drawer.Navigator>
-        </NavigationContainer>
-  );
-};
-
-export default MyStack;

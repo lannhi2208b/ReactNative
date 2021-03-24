@@ -14,6 +14,7 @@ export default class Home extends Component {
     }
 
     render() {
+        const navigation = this.props.navigation
         const { isActive } = this.state;
 
         return (
@@ -28,18 +29,18 @@ export default class Home extends Component {
                 </View>
                 <View>
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('Profile')} 
+                        onPress={() => navigation.navigate('Profile')} 
                         style={styles.buttonProfile}>
                         <Text style={styles.textButton}>MY PROFILE</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
-                        onPress={() => this.props.navigation.navigate('Login')} 
+                        onPress={() => navigation.navigate('Login')} 
                         style={styles.buttonSignIn}>
                         <Text style={styles.textButton}>LOGIN</Text>
                     </TouchableOpacity>
                     <Text style={[styles.textSmall, styles.textAlignCenter]}>Don't have account? 
                         <Text 
-                            onPress={() => this.props.navigation.navigate('Register')} 
+                            onPress={() => navigation.navigate('Register')} 
                             style={styles.textColorBlue}> Create a new account
                         </Text>
                     </Text>
