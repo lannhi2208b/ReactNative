@@ -35,7 +35,7 @@ export default class Profile extends Component {
                             <Icon reverseColor name='user-edit' type='FontAwesome5' style={styles.boxLeftIcon}/>
                             <TouchableOpacity 
                                 style={styles.boxRightButton}
-                                onPress={() => this.props.navigation.navigate('Edit Profile')}>
+                                onPress={() => this.props.navigation.navigate('EditProfile')}>
                                 <Text style={styles.textIcon}>Edit Profile</Text>
                                 <Icon reverseColor name='chevron-right' type='FontAwesome5' style={styles.rightIcon}/>
                             </TouchableOpacity>

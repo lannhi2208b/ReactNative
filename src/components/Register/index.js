@@ -1,4 +1,3 @@
-import { Button } from 'native-base';
 import React, { Component } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay'
 import { 
@@ -30,21 +29,39 @@ export default class Register extends Component {
     validate = () => {
         let messages = []
         let textMessages = ''
-        if (!this.state.formData.fname.trim()) {
+        let formData = this.state.formData
+
+        if (!formData.fname.trim()) {
             messages.push('Please enter your first name.')
         }
-        else if(!this.state.formData.lname.trim()) {
+        else if(!formData.lname.trim()) {
             messages.push('Please enter your last name.')
         }
-        else if(!this.state.formData.email.trim()) {
+        else if(!formData.email.trim()) {
             messages.push('Please enter your email.')
         }
-        else if(!this.state.formData.phone.trim()) {
+        else if(!formData.phone.trim()) {
             messages.push('Please enter your phone.')
         }
-        else if(!this.state.formData.password.trim()) {
+        else if(!formData.password.trim()) {
             messages.push('Please enter your password.')
         }
+
+        if(formData.password.trim() && formData.password.length < 6) {
+            messages.push('Password at least 6 characters.')
+        }
+
+        if(formData.phone.trim() && formData.phone.length < 10) {
+            messages.push('Phone at least 10 characters.')
+        }
+
+        if(formData.email.trim()) {
+            let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if (!re.test(String(formData.email).toLowerCase())) {
+                messages.push("Your email in invalid format.")
+            }
+        }
+
         messages.forEach((msg, index) => {
             if (index + 1 == messages.length) {
                 textMessages += msg
@@ -60,44 +77,51 @@ export default class Register extends Component {
             axios.post('http://192.168.92.2:8080/api/post-register', this.state.formData)
             .then(res => {
                 this.setState({ isLoading: false })
-                this.setState({ formData: { fname: '', lname: '', email: '', phone: '', password: '' }})
-                Alert.alert(
-                    "Successful!",
-                    "Welcome to React Native!",
-                    [
-                        { 
+                if(res.data.status == 0) {
+                    Alert.alert(
+                        "Error!", 
+                        res.data.msg,
+                        [{ 
                             text: "Ok",
                             onPress: () => console.log("Ok Pressed"),
-                        },
-                        {
-                            text: "Cancel",
-                            onPress: () => console.log("Cancel Pressed"),
-                            style: "cancel",
-                        }
-                    ],
-                    { cancelable: false }
-                );
+                        }], 
+                        { cancelable: false }
+                    );
+                }
+                else {
+                    Alert.alert(
+                        "Successful!",
+                        "Welcome to React Native!",
+                        [{ 
+                            text: "Ok",
+                            onPress: () => console.log("Ok Pressed"),
+                        }],
+                        { cancelable: false }
+                    );
+                    this.setState({ formData: { 
+                        fname: '', lname: '', 
+                        email: '', phone: '', password: '' 
+                    }})
+                }
             })
             .catch(error => {
-                this.setState({ isLoading: false })
                 console.log(error)
+                this.setState({ isLoading: false })
             })
         } 
         else {
             Alert.alert(
                "Error!", 
                 validation,
-                [
-                    { 
-                        text: "Ok",
-                        onPress: () => console.log("Ok Pressed"),
-                    },
-                    {
-                        text: "Cancel",
-                        onPress: () => console.log("Cancel Pressed"),
-                        style: "cancel",
-                    }
-                ],
+                [{ 
+                    text: "Ok",
+                    onPress: () => console.log("Ok Pressed"),
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                }],
                 { cancelable: false }
             );
         }
@@ -149,7 +173,7 @@ export default class Register extends Component {
                             style={styles.txtInput} onChangeText={(password) => this.changeFormData({password})}/>
 
                         <Text 
-                            onPress={() => this.props.navigation.navigate('Forgot Password')} 
+                            onPress={() => this.props.navigation.navigate('ForgotPassword')} 
                             style={[styles.textSmall, styles.textColorBlue, styles.textAlignRight]}>Forgot Password?</Text>
 
                         <TouchableOpacity onPress={this.register} style={styles.button}>

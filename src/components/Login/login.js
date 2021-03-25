@@ -119,7 +119,7 @@ export default class Login extends Component {
                             style={styles.txtInput} onChangeText={(password) => this.setState({password:password})}/>
 
                         <Text 
-                            onPress={() => this.props.navigation.navigate('Forgot Password')} 
+                            onPress={() => this.props.navigation.navigate('ForgotPassword')} 
                             style={[styles.textSmall, styles.textColorBlue, styles.textAlignRight]}>Forgot Password?</Text>
 
                         <TouchableOpacity onPress={this.login} style={styles.button}>

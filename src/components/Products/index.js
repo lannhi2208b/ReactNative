@@ -84,7 +84,7 @@ export default class Products extends Component {
                                     style={styles.imageThumbnail} />
                             </View>
                             <Text style={styles.itemTitle} 
-                                onPress={() => this.props.navigation.navigate('Product Detail')}>
+                                onPress={() => this.props.navigation.navigate('ProductDetail')}>
                                 {item.title}
                             </Text>
                             <Text style={styles.itemPrice}>$ {item.price}</Text>
