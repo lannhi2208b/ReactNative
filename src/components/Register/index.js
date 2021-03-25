@@ -51,8 +51,8 @@ export default class Register extends Component {
             messages.push('Password at least 6 characters.')
         }
 
-        if(formData.phone.trim() && formData.phone.length < 10) {
-            messages.push('Phone at least 10 characters.')
+        if(formData.phone.trim() && formData.phone.length < 9) {
+            messages.push('Phone at least 9 characters.')
         }
 
         if(formData.email.trim()) {
@@ -87,6 +87,19 @@ export default class Register extends Component {
                         }], 
                         { cancelable: false }
                     );
+                }
+                else if(res.data.status == 2) {
+                    let msg_error = this.first_array(res.data.msg)
+                    Alert.alert(
+                        "Error!", 
+                        msg_error[0],
+                        [{ 
+                            text: "Ok",
+                            onPress: () => console.log("Ok Pressed"),
+                        }], 
+                        { cancelable: false }
+                    );
+
                 }
                 else {
                     Alert.alert(
@@ -125,6 +138,10 @@ export default class Register extends Component {
                 { cancelable: false }
             );
         }
+    }
+
+    first_array(array) {
+        return array[Object.keys(array)[0]];
     }
 
     changeFormData = (item) => {
