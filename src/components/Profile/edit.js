@@ -16,9 +16,9 @@ export default class EditProfile extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.92.2:8080/api/register')
+        axios.get('http://192.168.92.2:8080/api/profile/edit/69')
         .then(response => {
-            this.setState({ register: response.data[0] });
+            this.setState({ register: response.data });
         })
         .catch(error => console.log(error))
     }

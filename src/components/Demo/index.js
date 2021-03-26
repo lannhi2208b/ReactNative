@@ -196,7 +196,7 @@ const HomeStack = ({navigation}) => {
 const ProductStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Products">
-            <Stack.Screen name="ProductDetail" component={ProductDetail} />
+            <Stack.Screen name="Product Detail" component={ProductDetail} />
             <Stack.Screen
                 name="Products"
                 component={Products}
@@ -253,7 +253,7 @@ const ProductDetailStack = ({navigation}) => {
 const ProfileStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Profile">
-            <Stack.Screen name="EditProfile" component={EditProfile} />
+            <Stack.Screen name="Edit Profile" component={EditProfile} />
             <Stack.Screen name="Settings" component={SettingsPage} />
             <Stack.Screen
                 name="Profile"

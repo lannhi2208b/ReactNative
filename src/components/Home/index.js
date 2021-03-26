@@ -9,16 +9,18 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isActive: false
+            isActive: false,
+            email: '',
         };
     }
 
     render() {
         const navigation = this.props.navigation
-        const { isActive } = this.state;
+        const { isActive, email } = this.state;
 
         return (
             <View style={styles.container}>
+                <Text>Email: { email }</Text>
                 <Text style={[
                     styles.header,
                     isActive ? styles.colorRed : styles.colorGreen,

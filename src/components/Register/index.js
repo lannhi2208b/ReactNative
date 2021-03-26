@@ -74,7 +74,7 @@ export default class Register extends Component {
         let validation = this.validate();
         if(!validation) {
             this.setState({ isLoading: true })
-            axios.post('http://192.168.92.2:8080/api/post-register', this.state.formData)
+            axios.post('http://192.168.92.2:8080/api/register', this.state.formData)
             .then(res => {
                 this.setState({ isLoading: false })
                 if(res.data.status == 0) {

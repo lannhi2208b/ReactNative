@@ -6,8 +6,28 @@ import images from "../Themes/images";
 import styles from "./styles";
 export { styles, images };
 
+import axios from 'axios';
 export default class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            register: [],
+        }
+    }
+
+    componentDidMount() {
+        axios.get('http://192.168.92.2:8080/api/profile/69')
+        .then(response => {
+            console.log(response.data)
+            this.setState({ register: response.data });
+        })
+        .catch(error => console.log(error))
+    }
+
     render() {
+        const navigation = this.props.navigation
+        const { register } = this.state;
+
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView}>
@@ -18,16 +38,10 @@ export default class Profile extends Component {
                             <Image source={images.avatar} resizeMode='stretch' style={styles.imgAvatar} />
                         </View>
                         <View style={[styles.boxRight]}>
-                            <Text style={styles.txtProfileName}>Ktla Lan Nhi</Text>
-                            <Text style={styles.txtProfileGray}>
-                                +84 336153031
-                            </Text>
-                            <Text style={styles.txtProfileGray}>
-                                Lannhi2208b@gmail.com
-                            </Text>
-                            <Text style={styles.txtProfileGray}>
-                                Hai Ba Trung, Ha noi
-                            </Text>
+                            <Text style={styles.txtProfileName}>{register.fname} {register.lname}</Text>
+                            <Text style={styles.txtProfileGray}>Phone: {register.phone}</Text>
+                            <Text style={styles.txtProfileGray}>Email: {register.email}</Text>
+                            <Text style={styles.txtProfileGray}>Address: {register.address}</Text>
                         </View>
                     </View>
                     <View style={styles.boxProfileContent}>
@@ -35,7 +49,7 @@ export default class Profile extends Component {
                             <Icon reverseColor name='user-edit' type='FontAwesome5' style={styles.boxLeftIcon}/>
                             <TouchableOpacity 
                                 style={styles.boxRightButton}
-                                onPress={() => this.props.navigation.navigate('EditProfile')}>
+                                onPress={() => navigation.navigate('Edit Profile')}>
                                 <Text style={styles.textIcon}>Edit Profile</Text>
                                 <Icon reverseColor name='chevron-right' type='FontAwesome5' style={styles.rightIcon}/>
                             </TouchableOpacity>
@@ -52,7 +66,7 @@ export default class Profile extends Component {
                             <Icon reverseColor name='cog' type='FontAwesome5' style={styles.boxLeftIcon}/>
                             <TouchableOpacity 
                                 style={styles.boxRightButton}
-                                onPress={() => this.props.navigation.navigate('Settings')}>
+                                onPress={() => navigation.navigate('Settings')}>
                                 <Text style={styles.textIcon}>Settings</Text>
                                 <Icon reverseColor name='chevron-right' type='FontAwesome5' style={styles.rightIcon}/>
                             </TouchableOpacity>
