@@ -99,7 +99,6 @@ export default class Register extends Component {
                         }], 
                         { cancelable: false }
                     );
-
                 }
                 else {
                     Alert.alert(
