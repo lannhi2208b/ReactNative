@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Icon, Right, Left } from 'native-base';
+import { Icon } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Platform, View, Text, Image, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 import images from "../Themes/images";
 import styles from "./styles";
 export { styles, images };
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 export default class Profile extends Component {
     constructor(props) {
         super(props);
@@ -16,12 +17,17 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.92.2:8080/api/profile/69')
-        .then(response => {
-            console.log(response.data)
-            this.setState({ register: response.data });
+        AsyncStorage.getItem('ReactNativeStore:token')
+        .then(token => {
+            axios.get('http://192.168.92.2:8080/api/profile/', {
+                params: {token: token}
+            })
+            .then(response => {
+                console.log(response.data)
+                this.setState({ register: response.data });
+            })
+            .catch(error => console.log(error))
         })
-        .catch(error => console.log(error))
     }
 
     render() {

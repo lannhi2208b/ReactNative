@@ -1,6 +1,7 @@
 import { Button } from 'native-base';
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import styles from "./styles";
 export { styles };
@@ -53,13 +54,15 @@ export default class Login extends Component {
             this.setState({ isLoading: true })
             axios.post('http://192.168.92.2:8080/api/login', formData)
             .then(res => {
-                this.setState({ isLoading: false })
-                console.log(res)
-                if (res.data.status == 1) {
-                    AsyncStorage.setItem('user_id', res.data.email);
-                    console.log(res.data.email);
-                } 
-                else if (res.data.status == 2) {
+                if(res.data.status == 1) {
+                    AsyncStorage.setItem('ReactNativeStore:token', res.data.token).then(() => {
+                        this.setState({ isLoading: false }, () => {
+                            this.props.navigation.navigate('Home')
+                        })
+                    })
+                }
+                else {
+                    this.setState({ isLoading: false })
                     Alert.alert(
                         "Error!", 
                         res.data.msg,
@@ -97,8 +100,11 @@ export default class Login extends Component {
     }
 
     render() {
+        const { isLoading } = this.state
+
         return (
             <View style={styles.container}>
+                <Spinner visible={isLoading} />
                 <View>
                     <Text style={[styles.header, styles.textAlignCenter]}>Login</Text>
                     <View style={[styles.boxMainLogin, styles.boxWithShadow, styles.borderBox]}>

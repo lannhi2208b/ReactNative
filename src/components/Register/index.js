@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Spinner from 'react-native-loading-spinner-overlay'
+import Spinner from 'react-native-loading-spinner-overlay';
 import { 
     View, Text, TextInput, TouchableOpacity, Alert
 } from 'react-native';

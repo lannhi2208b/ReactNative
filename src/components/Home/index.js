@@ -5,6 +5,8 @@ import images from "../Themes/images";
 import styles from "./style";
 export { styles, images };
 
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +14,19 @@ export default class Home extends Component {
             isActive: false,
             email: '',
         };
+    }
+
+    componentDidMount() {
+        AsyncStorage.getItem('ReactNativeStore:token')
+        .then(token => {
+            axios.get('http://192.168.92.2:8080/api/home', {
+                params: {token: token}
+            })
+            .then(res => {
+                this.setState({ email: res.data });
+            })
+            .catch(error => console.log(error))
+        })
     }
 
     render() {

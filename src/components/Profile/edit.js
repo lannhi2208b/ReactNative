@@ -7,6 +7,7 @@ import styles from "./styles";
 export { styles, images };
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 export default class EditProfile extends Component {
     constructor(props) {
         super(props);
@@ -16,11 +17,16 @@ export default class EditProfile extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.92.2:8080/api/profile/edit/69')
-        .then(response => {
-            this.setState({ register: response.data });
+        AsyncStorage.getItem('ReactNativeStore:token')
+        .then(token => {
+            axios.get('http://192.168.92.2:8080/api/profile/edit/', {
+                params: {token: token}
+            })
+            .then(response => {
+                this.setState({ register: response.data });
+            })
+            .catch(error => console.log(error))
         })
-        .catch(error => console.log(error))
     }
     
     validate = () => {
