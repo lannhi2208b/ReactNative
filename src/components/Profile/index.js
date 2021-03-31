@@ -17,13 +17,16 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
+        let headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+
         AsyncStorage.getItem('ReactNativeStore:token')
         .then(token => {
-            axios.get('http://192.168.92.2:8080/api/profile/', {
-                params: {token: token}
-            })
+            headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
+            axios.get('http://192.168.92.2:8080/api/profile/', { headers: headers })
             .then(response => {
-                console.log(response.data)
                 this.setState({ register: response.data });
             })
             .catch(error => console.log(error))

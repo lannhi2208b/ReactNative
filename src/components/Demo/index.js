@@ -16,10 +16,11 @@ import EditProfile from '../Profile/edit';
 import SettingsPage from '../Settings';
 import Products from '../Products';
 import ProductDetail from '../Products/ProductDetail';
+import Logout from '../Login/logout';
 export { 
     Home, Login, Register, ForgotPassword, 
     EditProfile, Profile, SettingsPage, 
-    Products, ProductDetail 
+    Products, ProductDetail, Logout 
 };
 
 import styles from "./styles";
@@ -69,6 +70,8 @@ const getHeaderTitle = (route) => {
             return 'SettingsPage';
         case 'TabStack':
             return 'SettingsPage';
+        case 'Logout':
+            return 'Logout';
     }
 };
 
@@ -154,6 +157,10 @@ const MyStack = () => {
                 <Drawer.Screen name="SettingsStack" 
                     component={SettingsStack} 
                     options={{ drawerLabel: 'Settings' }} 
+                />
+                <Drawer.Screen name="LogoutStack" 
+                    component={LogoutStack} 
+                    options={{ drawerLabel: 'Logout' }} 
                 />
             </Drawer.Navigator>
         </NavigationContainer>
@@ -311,7 +318,7 @@ const EditProfileStack = ({navigation}) => {
 const LoginStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="Forgot Password" component={ForgotPassword} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen
                 name="Login"
@@ -341,7 +348,7 @@ const LoginStack = ({navigation}) => {
 const RegisterStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="Register">
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="Forgot Password" component={ForgotPassword} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen
                 name="Register"
@@ -371,7 +378,6 @@ const RegisterStack = ({navigation}) => {
 const ForgotPasswordStack = ({navigation}) => {
     return (
         <Stack.Navigator initialRouteName="ForgotPassword">
-            <Stack.Screen name="Login" component={Login} />
             <Stack.Screen
                 name="Forgot Password"
                 component={ForgotPassword}
@@ -421,6 +427,14 @@ const SettingsStack = ({navigation}) => {
                     }
                 })}
             />
+        </Stack.Navigator>
+    );
+};
+
+const LogoutStack = () => {
+    return (
+        <Stack.Navigator initialRouteName="Logout">
+            <Stack.Screen name="Logout" component={Logout} />
         </Stack.Navigator>
     );
 };

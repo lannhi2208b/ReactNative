@@ -17,11 +17,15 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
+        let headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+
         AsyncStorage.getItem('ReactNativeStore:token')
         .then(token => {
-            axios.get('http://192.168.92.2:8080/api/home', {
-                params: {token: token}
-            })
+            headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
+            axios.get('http://192.168.92.2:8080/api/home', { headers: headers })
             .then(res => {
                 this.setState({ email: res.data });
             })

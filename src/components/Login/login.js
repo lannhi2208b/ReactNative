@@ -54,15 +54,23 @@ export default class Login extends Component {
             this.setState({ isLoading: true })
             axios.post('http://192.168.92.2:8080/api/login', formData)
             .then(res => {
+                this.setState({ isLoading: false })
                 if(res.data.status == 1) {
                     AsyncStorage.setItem('ReactNativeStore:token', res.data.token).then(() => {
                         this.setState({ isLoading: false }, () => {
-                            this.props.navigation.navigate('Home')
+                            Alert.alert(
+                                "Successful!", 
+                                res.data.msg,
+                                [{ 
+                                    text: "Ok",
+                                    onPress: () => this.props.navigation.navigate('Home'),
+                                }], 
+                                { cancelable: false }
+                            );
                         })
                     })
                 }
                 else {
-                    this.setState({ isLoading: false })
                     Alert.alert(
                         "Error!", 
                         res.data.msg,
@@ -122,7 +130,7 @@ export default class Login extends Component {
                             style={styles.txtInput} onChangeText={(password) => this.setState({password:password})}/>
 
                         <Text 
-                            onPress={() => this.props.navigation.navigate('ForgotPassword')} 
+                            onPress={() => this.props.navigation.navigate('Forgot Password')} 
                             style={[styles.textSmall, styles.textColorBlue, styles.textAlignRight]}>Forgot Password?</Text>
 
                         <TouchableOpacity onPress={this.login} style={styles.button}>

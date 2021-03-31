@@ -189,7 +189,7 @@ export default class Register extends Component {
                             style={styles.txtInput} onChangeText={(password) => this.changeFormData({password})}/>
 
                         <Text 
-                            onPress={() => this.props.navigation.navigate('ForgotPassword')} 
+                            onPress={() => this.props.navigation.navigate('Forgot Password')} 
                             style={[styles.textSmall, styles.textColorBlue, styles.textAlignRight]}>Forgot Password?</Text>
 
                         <TouchableOpacity onPress={this.register} style={styles.button}>

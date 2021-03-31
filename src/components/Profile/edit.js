@@ -17,11 +17,15 @@ export default class EditProfile extends Component {
     }
 
     componentDidMount() {
+        let headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+
         AsyncStorage.getItem('ReactNativeStore:token')
         .then(token => {
-            axios.get('http://192.168.92.2:8080/api/profile/edit/', {
-                params: {token: token}
-            })
+            headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
+            axios.get('http://192.168.92.2:8080/api/profile/edit/', { headers: headers })
             .then(response => {
                 this.setState({ register: response.data });
             })
