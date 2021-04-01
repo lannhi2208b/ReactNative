@@ -15,17 +15,15 @@ export default class Logout extends Component {
     componentDidMount() {
         let headers = {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
         }
 
         AsyncStorage.getItem('ReactNativeStore:token')
         .then(token => {
             this.setState({ isLoading: true })
             headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
-            axios.post('http://192.168.92.2:8080/api/logout/', { headers: headers, token: token })
+            axios.post('http://192.168.92.2:8080/api/logout/', token, { headers: headers })
             .then(res => {
                 this.setState({ isLoading: false })
-                console.log(res);
                 Alert.alert(
                     "Successful!", 
                     res.data.msg,
