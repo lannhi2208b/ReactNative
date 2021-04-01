@@ -8,6 +8,8 @@ import styles from "../Login/styles";
 export { styles };
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import ForgotPassword from '../Login/forgot';
 import Login from '../Login/login';
 export { Login, ForgotPassword };
@@ -101,15 +103,19 @@ export default class Register extends Component {
                     );
                 }
                 else {
-                    Alert.alert(
-                        "Successful!",
-                        "Welcome to React Native!",
-                        [{ 
-                            text: "Ok",
-                            onPress: () => this.props.navigation.navigate('Home'),
-                        }],
-                        { cancelable: false }
-                    );
+                    AsyncStorage.setItem('ReactNativeStore:token', res.data.token).then(() => {
+                        this.setState({ isLoading: false }, () => {
+                            Alert.alert(
+                                "Successful!", 
+                                res.data.msg,
+                                [{ 
+                                    text: "Ok",
+                                    onPress: () => this.props.navigation.navigate('Home'),
+                                }], 
+                                { cancelable: false }
+                            );
+                        })
+                    })
                     this.setState({ formData: { fname: '', lname: '', email: '', phone: '', password: '' }})
                 }
             })
