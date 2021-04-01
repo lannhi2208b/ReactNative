@@ -106,14 +106,11 @@ export default class Register extends Component {
                         "Welcome to React Native!",
                         [{ 
                             text: "Ok",
-                            onPress: () => console.log("Ok Pressed"),
+                            onPress: () => this.props.navigation.navigate('Home'),
                         }],
                         { cancelable: false }
                     );
-                    this.setState({ formData: { 
-                        fname: '', lname: '', 
-                        email: '', phone: '', password: '' 
-                    }})
+                    this.setState({ formData: { fname: '', lname: '', email: '', phone: '', password: '' }})
                 }
             })
             .catch(error => {
