@@ -1,11 +1,19 @@
 import { Icon } from 'native-base';
 import React, { Component } from 'react';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Select2 from 'react-native-select-two';
 
 import styles from './styles';
 export { styles };
 
+const Language = [
+    { id: 1, name: 'Vietnamese', checked: true },
+    { id: 2, name: 'English' },
+    { id: 4, name: 'Russian' },
+    { id: 3, name: 'French' },
+    { id: 5, name: 'Philippines' },
+];
 export default class SettingsPage extends Component {
     constructor(prop) {
         super(prop);
@@ -86,7 +94,26 @@ export default class SettingsPage extends Component {
                             <Text style={styles.boxTitle}>Language</Text>
                         </View>
                         <View style={styles.boxTextRight}>
-                            <Text>Vietnamese</Text>
+                            <Select2
+                                isSelectSingle
+                                style={styles.boxSelect2}
+                                selectedTitleStyle={{ textAlign: "right" }}
+                                colorTheme={'#4ca5b3'}
+                                popupTitle='Select Language'
+                                title='Select Language'
+                                showSearchBox={false}
+                                searchPlaceHolderText='Enter Keywords..'
+                                listEmptyTitle='Can Not Find a Suitable Option'
+                                selectButtonText='Choose'
+                                cancelButtonText='Cancel'
+                                data={Language}
+                                onSelect={data => {
+                                    this.setState({ data });
+                                }}
+                                onRemoveItem={data => {
+                                    this.setState({ data });
+                                }} 
+                            />
                             <Icon reverseColor name='chevron-right' type='FontAwesome5' style={styles.rightIcon}/>
                         </View>
                     </View>

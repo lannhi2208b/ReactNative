@@ -65,6 +65,9 @@ const styles = {
     rightIcon: {
         fontSize: 16,
         paddingLeft: 5,
+    },
+    boxSelect2: {
+        borderWidth: 0,
     }
 };
 export default styles;
