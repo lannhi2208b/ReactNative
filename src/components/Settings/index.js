@@ -4,10 +4,13 @@ import { View, Text } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Select2 from 'react-native-select-two';
 
+import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import styles from './styles';
 export { styles };
 
-const Language = [
+const language = [
     { id: 1, name: 'Vietnamese', checked: true },
     { id: 2, name: 'English' },
     { id: 4, name: 'Russian' },
@@ -21,7 +24,25 @@ export default class SettingsPage extends Component {
             isOn1: true,
             isOn2: false,
             isOn3: true,
+            countries: [],
         }
+    }
+
+    componentDidMount() {
+        let headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+
+        AsyncStorage.getItem('ReactNativeStore:token')
+        .then(token => {
+            headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
+            axios.get('http://192.168.92.2:8080/api/countries', { headers: headers })
+            .then(res => {
+                this.setState({ countries: res.data });
+            })
+            .catch(error => console.log(error))
+        })
     }
     
     toggleHandle1 = () => {
@@ -35,9 +56,7 @@ export default class SettingsPage extends Component {
     }
 
     render() {
-        const { isOn1 } = this.state;
-        const { isOn2 } = this.state;
-        const { isOn3 } = this.state;
+        const { isOn1, isOn2, isOn3, countries } = this.state;
 
         return (
             <View style={styles.mainContainer} >
@@ -85,6 +104,26 @@ export default class SettingsPage extends Component {
                         </View>
                         <View style={styles.boxTextRight}>
                             <Text>VietNam</Text>
+                            <Select2
+                                isSelectSingle
+                                style={styles.boxSelect2}
+                                selectedTitleStyle={{ textAlign: "right" }}
+                                colorTheme={'#4ca5b3'}
+                                popupTitle='Select Country'
+                                title='Select Country'
+                                showSearchBox={true}
+                                searchPlaceHolderText='Enter Keywords..'
+                                listEmptyTitle='Can Not Find a Suitable Option'
+                                selectButtonText='Choose'
+                                cancelButtonText='Cancel'
+                                data={countries}
+                                onSelect={data => {
+                                    this.setState({ data });
+                                }}
+                                onRemoveItem={data => {
+                                    this.setState({ data });
+                                }} 
+                            />
                             <Icon reverseColor name='chevron-right' type='FontAwesome5' style={styles.rightIcon}/>
                         </View>
                     </View>
@@ -101,12 +140,12 @@ export default class SettingsPage extends Component {
                                 colorTheme={'#4ca5b3'}
                                 popupTitle='Select Language'
                                 title='Select Language'
-                                showSearchBox={false}
+                                showSearchBox={true}
                                 searchPlaceHolderText='Enter Keywords..'
                                 listEmptyTitle='Can Not Find a Suitable Option'
                                 selectButtonText='Choose'
                                 cancelButtonText='Cancel'
-                                data={Language}
+                                data={language}
                                 onSelect={data => {
                                     this.setState({ data });
                                 }}
