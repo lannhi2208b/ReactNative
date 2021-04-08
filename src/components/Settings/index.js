@@ -1,6 +1,7 @@
 import { Icon } from 'native-base';
+import Spinner from 'react-native-loading-spinner-overlay';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Select2 from 'react-native-select-two';
 
@@ -9,6 +10,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import styles from './styles';
 export { styles };
+
+const animateIn = () => {
+    Animated.timing(animatePress, {
+        toValue: 0.5,
+        duration: 500,
+        useNativeDriver: true,
+    }).start();
+}
 
 const language = [
     { id: 1, name: 'Vietnamese', checked: true },
@@ -21,9 +30,13 @@ export default class SettingsPage extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            isOn1: true,
-            isOn2: false,
-            isOn3: true,
+            isOn: true,
+            isLoading: false,
+            token: '',
+            notification: '',
+            facebook: '',
+            instagram: '',
+            register: '',
             countries: [],
         }
     }
@@ -37,29 +50,103 @@ export default class SettingsPage extends Component {
         AsyncStorage.getItem('ReactNativeStore:token')
         .then(token => {
             headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
-            axios.get('http://192.168.92.2:8080/api/countries', { headers: headers })
+            axios.get('http://192.168.92.2:8080/api/setting', { headers: headers })
             .then(res => {
-                this.setState({ countries: res.data });
+                this.setState({ 
+                    register: res.data.register,
+                    countries: res.data.countries,
+                    notification: res.data.register.notification,
+                    facebook: res.data.register.facebook,
+                    instagram: res.data.register.instagram,
+                });
             })
             .catch(error => console.log(error))
+
+            // Save token to State
+            this.setState({ token: token });
         })
     }
     
-    toggleHandle1 = () => {
-        this.setState({ isOn1: !this.state.isOn1 });
+    // toggleHandle = () => {
+    //     this.setState({ isOn: !this.state.isOn });
+    // }
+
+    toggleHandle = (value, key) => {
+        let result = (value == 0) ? 1 : 0;
+        if(key == 'notification')
+            this.setState({ notification: result });
+        else if(key == 'facebook')
+            this.setState({ facebook: result });
+        else
+            this.setState({ instagram: result });
     }
-    toggleHandle2 = () => {
-        this.setState({ isOn2: !this.state.isOn2 });
+
+    changeFormData = (item) => {
+        let formData = this.state.formData;
+        this.setState({ formData: { ...formData, ...item } });
     }
-    toggleHandle3 = () => {
-        this.setState({ isOn3: !this.state.isOn3 });
+
+    saveSetting = () => {
+        let token = this.state.token;
+        let headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        }
+
+        const formData = {
+            notification: this.state.notification,
+            facebook: this.state.facebook,
+            instagram: this.state.instagram,
+        };
+
+        if(token) {
+            this.setState({ isLoading: true })
+            headers = {...headers, ...{ Authorization: `Bearer ${token}`}}
+            this.setState({ isLoading: true })
+            axios.post('http://192.168.92.2:8080/api/setting/update', formData, { 
+                headers: headers 
+            })
+            .then(res => {
+                this.setState({ isLoading: false })
+                Alert.alert(
+                    "Error!", 
+                    res.data.msg,
+                    [{ 
+                        text: "Ok",
+                        onPress: () => console.log("Ok Pressed"),
+                    }], 
+                    { cancelable: false }
+                );
+            })
+            .catch(error => {
+                console.log(error)
+                this.setState({ isLoading: false })
+            })
+        } 
+        else {
+            Alert.alert(
+               "Error!", 
+                "Sorry! Cannot update something is wrong.",
+                [{ 
+                    text: "Ok",
+                    onPress: () => console.log("Ok Pressed"),
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel",
+                }],
+                { cancelable: false }
+            );
+        }
     }
 
     render() {
-        const { isOn1, isOn2, isOn3, countries } = this.state;
+        const { isLoading, countries, notification, facebook, instagram } = this.state;
 
         return (
             <View style={styles.mainContainer} >
+                <Spinner visible={isLoading} />
                 <View style={styles.boxMainSetting}>
                     <Text style={styles.txtOption}> Option </Text>
                     <View style={styles.boxItem}>
@@ -71,17 +158,18 @@ export default class SettingsPage extends Component {
                         <View style={styles.boxTextRight}>
                             <TouchableOpacity 
                                 activeOpacity={0.5} 
-                                onPress={this.toggleHandle1}
+                                onPress={() => this.toggleHandle(notification, 'notification')}
                                 style={[
                                     styles.buttonCheckbox,
-                                    isOn1 ? styles.btnColorGreen : styles.btnColorGray,
+                                    (notification == 1) ? styles.btnColorGreen : styles.btnColorGray,
                                 ]}>
                                 <View style={[
                                     styles.viewCheckbox,
                                     {transform: [{
-                                        translateX: isOn1 ? 27 : 0,
+                                        translateX: (notification == 1) ? 27 : 0,
                                     }]}
-                                ]} />
+                                ]}>
+                                </View>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -103,7 +191,6 @@ export default class SettingsPage extends Component {
                             <Text style={styles.boxTitle}>Country</Text>
                         </View>
                         <View style={styles.boxTextRight}>
-                            <Text>VietNam</Text>
                             <Select2
                                 isSelectSingle
                                 style={styles.boxSelect2}
@@ -167,15 +254,15 @@ export default class SettingsPage extends Component {
                         <View style={styles.boxTextRight}>
                             <TouchableOpacity 
                                 activeOpacity={0.5} 
-                                onPress={this.toggleHandle2}
+                                onPress={() => this.toggleHandle(facebook, 'facebook')}
                                 style={[
                                     styles.buttonCheckbox,
-                                    isOn2 ? styles.btnColorGreen : styles.btnColorGray,
+                                    (facebook == 1) ? styles.btnColorGreen : styles.btnColorGray,
                                 ]}>
                                 <View style={[
                                     styles.viewCheckbox,
                                     {transform: [{
-                                        translateX: isOn2 ? 27 : 0,
+                                        translateX: (facebook == 1) ? 27 : 0,
                                     }]}
                                 ]} />
                             </TouchableOpacity>
@@ -189,21 +276,24 @@ export default class SettingsPage extends Component {
                         <View style={styles.boxTextRight}>
                             <TouchableOpacity 
                                 activeOpacity={0.5} 
-                                onPress={this.toggleHandle3}
+                                onPress={() => this.toggleHandle(instagram, 'instagram')}
                                 style={[
                                     styles.buttonCheckbox,
-                                    isOn3 ? styles.btnColorGreen : styles.btnColorGray,
+                                    (instagram == 1) ? styles.btnColorGreen : styles.btnColorGray,
                                 ]}>
                                 <View style={[
                                     styles.viewCheckbox,
                                     {transform: [{
-                                        translateX: isOn3 ? 27 : 0,
+                                        translateX: (instagram == 1) ? 27 : 0,
                                     }]}
                                 ]} />
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
+                <TouchableOpacity onPress={this.saveSetting} style={styles.button}>
+                    <Text style={styles.txtButton}>SAVE</Text>
+                </TouchableOpacity>
             </View>
         );
     }

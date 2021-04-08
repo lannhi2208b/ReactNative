@@ -9,7 +9,7 @@ const styles = {
         backgroundColor: 'white',
     },
     boxMainSetting: {
-        marginBottom: 15,
+        marginBottom: 0,
     },
     txtOption: {
         fontSize: 17,
@@ -68,6 +68,20 @@ const styles = {
     },
     boxSelect2: {
         borderWidth: 0,
+    },
+    button: {
+        backgroundColor:'#4CA5B3',
+        width: "100%",
+        borderRadius: 20,
+        marginTop: 10,
+        padding: 8,
+    },
+    txtButton: {
+        color:'#fff',
+        textAlign:'center',
+        width: "100%",
+        fontWeight: "bold",
+        fontSize: 14,
     }
 };
 export default styles;
